@@ -1,5 +1,57 @@
-<!doctype html>
-<style>
+ <?php
+ session_start();
+ //connect to database
+ $mysqli = mysqli_connect("localhost", "root", "", "test");
+ $display_block = "<h1>Your Shopping Cart</h1>";
+ //check for cart items based on user session id
+ $get_cart_sql = "SELECT st.id, si.item_title, si.item_price,
+ st.sel_item_qty, st.sel_item_size, st.sel_item_color FROM
+ store_shoppertrack AS st LEFT JOIN store_items AS si ON
+ si.id = st.sel_item_id WHERE session_id =
+ '".$_COOKIE['PHPSESSID']."'";
+ $get_cart_res = mysqli_query($mysqli, $get_cart_sql)
+ or die(mysqli_error($mysqli));
+ if (mysqli_num_rows($get_cart_res) < 1) {
+ //print message
+ $display_block .= "<p>You have no items in your cart.
+ Please <a href=\"home.php\">continue to shop</a>!</p>";
+ } else {
+ //get info and build cart display
+ $display_block .= <<<END_OF_TEXT
+ <table>
+ <tr>
+ <th>Title</th>
+ <th>Price</th>
+ <th>Qty</th>
+ <th>Total Price</th>
+ <th>Action</th>
+ </tr>
+ END_OF_TEXT;
+ while ($cart_info = mysqli_fetch_array($get_cart_res)) {
+ $id = $cart_info['id'];
+ $item_title = stripslashes($cart_info['item_title']);
+ $item_price = $cart_info['item_price'];
+ $item_qty = $cart_info['sel_item_qty'];
+ $total_price = sprintf("%.02f", $item_price * $item_qty);
+ 
+ $display_block .= <<<END_OF_TEXT
+ <tr>
+ <td>$item_title <br></td>
+ <td>\$ $item_price <br></td>
+ <td>$item_qty <br></td>
+ <td>\$ $total_price</td>
+ <td><a href="removefromcart.php?id=$id">remove</a></td>
+ </tr>
+ END_OF_TEXT;
+ }
+ $display_block .= "</table>";
+ }
+ //free result
+ mysqli_free_result($get_cart_res);
+ //close connection to MySQL
+ mysqli_close($mysqli);
+ ?>
+ <style>
     * {
       box-sizing: border-box; 
     }
@@ -35,13 +87,14 @@
     }
     p {color:black;}
   </style>
-<head>	
+  <html>
+  <head>	
       <title>CIST 2550 Final</title>
   </head>
     <nav class="col-1">Navigation
       <ul>
-        <li><a href="home.html">Home</a></li>
-             <li><a href="signin.html">Sign-in</a></li>
+        <li><a href="home.php">Home</a></li>
+             <li><a href="signin.php">Sign-in</a></li>
              <li><a href="createaccount.php">Create Account</a></li>
              <li><a href="cart.php">Cart</a></li>
              <li><a href="contactus.html">Contact Us</a></li>
@@ -51,64 +104,27 @@
     </nav>
     <div class="col-2">
         <header><img src="NorthGeorgiaTech.jpg" alt"ngtc" style="width:250px;height:125px;">CIST 2352 Final Project</header>
-<body>
-<div id="shopping-cart">
-<div class="txt-heading">Shopping Cart</div>
-
-<a id="btnEmpty" href="index.php?action=empty">Empty Cart</a>
-<?php
-if(isset($_SESSION["cart_item"])){
-    $total_quantity = 0;
-    $total_price = 0;
-?>	
-<table class="tbl-cart" cellpadding="10" cellspacing="1">
-<tbody>
-<tr>
-<th style="text-align:left;">Name</th>
-<th style="text-align:left;">Code</th>
-<th style="text-align:right;" width="5%">Quantity</th>
-<th style="text-align:right;" width="10%">Unit Price</th>
-<th style="text-align:right;" width="10%">Price</th>
-<th style="text-align:center;" width="5%">Remove</th>
-</tr>	
-<?php		
-    foreach ($_SESSION["cart_item"] as $item){
-        $item_price = $item["quantity"]*$item["price"];
-		?>
-				<tr>
-				<td><img src="<?php echo $item["image"]; ?>" class="cart-item-image" /><?php echo $item["name"]; ?></td>
-				<td><?php echo $item["code"]; ?></td>
-				<td style="text-align:right;"><?php echo $item["quantity"]; ?></td>
-				<td  style="text-align:right;"><?php echo "$ ".$item["price"]; ?></td>
-				<td  style="text-align:right;"><?php echo "$ ". number_format($item_price,2); ?></td>
-				<td style="text-align:center;"><a href="index.php?action=remove&code=<?php echo $item["code"]; ?>" class="btnRemoveAction"><img src="icon-delete.png" alt="Remove Item" /></a></td>
-				</tr>
-				<?php
-				$total_quantity += $item["quantity"];
-				$total_price += ($item["price"]*$item["quantity"]);
-		}
-		?>
-
-<tr>
-<td colspan="2" align="right">Total:</td>
-<td align="right"><?php echo $total_quantity; ?></td>
-<td align="right" colspan="2"><strong><?php echo "$ ".number_format($total_price, 2); ?></strong></td>
-<td></td>
-</tr>
-</tbody>
-</table>		
-  <?php
-} else {
-?>
-<div class="no-records">Your Cart is Empty</div>
-<?php 
-}
-?>
-</div>
-<input type="submit">
-</body>
-</article>
-    </main>
-
-  </div>
-</body>
+        <style type="text/css">
+ table {
+ border: 1px solid black;
+ border-collapse: collapse;
+ }
+ th {
+ border: 1px solid black;
+ padding: 6px;
+ font-weight: bold;
+ background: #ccc;
+ text-align: center;
+ }
+ td {
+ border: 1px solid black;
+ padding: 6px;
+ vertical-align: top;
+ text-align: center;
+ }
+ </style>
+ </head>
+ <body>
+ <?php echo $display_block; ?>
+ </body>
+ </html>

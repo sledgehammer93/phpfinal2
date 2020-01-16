@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.9.0.1
+-- version 4.9.2
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Sep 02, 2019 at 01:00 AM
--- Server version: 10.4.6-MariaDB
--- PHP Version: 7.3.8
+-- Generation Time: Jan 16, 2020 at 02:28 AM
+-- Server version: 10.4.11-MariaDB
+-- PHP Version: 7.4.1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -27,59 +27,158 @@ SET time_zone = "+00:00";
 --
 -- Table structure for table `music`
 --
-CREATE TABLE `music` (
+-- Error reading structure for table test.music: #1932 - Table 'test.music' doesn't exist in engine
+-- Error reading data for table test.music: #1064 - You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'FROM `test`.`music`' at line 1
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `store_categories`
+--
+
+CREATE TABLE `store_categories` (
   `id` int(11) NOT NULL,
-  `title` varchar(255) NOT NULL,
-  `artist` varchar(255) NOT NULL,
-  `album` varchar(255) NOT NULL,
-  `genre` varchar(255) NOT NULL,
-  `format` varchar(255) NOT NULL,
-  `producer` varchar(255) NOT NULL,
-  `label` varchar(255) NOT NULL,
-  `rating` int(5) NOT NULL,
-  `date` year(4) NOT NULL,
-  `run` varchar(255) NOT NULL
+  `cat_title` varchar(50) DEFAULT NULL,
+  `cat_desc` text DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `store_categories`
+--
+
+INSERT INTO `store_categories` (`id`, `cat_title`, `cat_desc`) VALUES
+(1, 'Air', 'Clean, crisp, and full of refinement.');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `store_items`
+--
+
+CREATE TABLE `store_items` (
+  `id` int(11) NOT NULL,
+  `cat_id` int(11) NOT NULL,
+  `item_title` varchar(75) DEFAULT NULL,
+  `item_price` float(8,2) DEFAULT NULL,
+  `item_desc` text DEFAULT NULL,
+  `item_image` varchar(50) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `store_items`
+--
+
+INSERT INTO `store_items` (`id`, `cat_id`, `item_title`, `item_price`, `item_desc`, `item_image`) VALUES
+(1, 1, 'Canned Air', 10.00, 'Fancy, low-profile baseball hat.', 'can.jpeg'),
+(2, 1, 'Bottled Air', 20.00, '10 gallon variety', 'bottled.jpg'),
+(3, 1, 'Packaged Air', 30.00, 'Good for costumes.', 'packaged.jpg');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `store_orders`
+--
+
+CREATE TABLE `store_orders` (
+  `id` int(11) NOT NULL,
+  `order_date` datetime DEFAULT NULL,
+  `order_name` varchar(100) DEFAULT NULL,
+  `order_address` varchar(255) DEFAULT NULL,
+  `order_city` varchar(50) DEFAULT NULL,
+  `order_state` char(2) DEFAULT NULL,
+  `order_zip` varchar(10) DEFAULT NULL,
+  `order_tel` varchar(25) DEFAULT NULL,
+  `order_email` varchar(100) DEFAULT NULL,
+  `item_total` float(6,2) DEFAULT NULL,
+  `shipping_total` float(6,2) DEFAULT NULL,
+  `authorization` varchar(50) DEFAULT NULL,
+  `status` enum('processed','pending') DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `store_orders_items`
+--
+
+CREATE TABLE `store_orders_items` (
+  `id` int(11) NOT NULL,
+  `order_id` int(11) DEFAULT NULL,
+  `sel_item_id` int(11) DEFAULT NULL,
+  `sel_item_qty` smallint(6) DEFAULT NULL,
+  `sel_item_size` varchar(25) DEFAULT NULL,
+  `sel_item_color` varchar(25) DEFAULT NULL,
+  `sel_item_price` float(6,2) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `store_shoppertrack`
+--
+
+CREATE TABLE `store_shoppertrack` (
+  `id` int(11) NOT NULL,
+  `session_id` varchar(32) DEFAULT NULL,
+  `sel_item_id` int(11) DEFAULT NULL,
+  `sel_item_qty` smallint(6) DEFAULT NULL,
+  `sel_item_size` varchar(25) DEFAULT NULL,
+  `sel_item_color` varchar(25) DEFAULT NULL,
+  `date_added` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE `users` (
+  `id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `contact` varchar(255) NOT NULL,
+  `city` varchar(255) NOT NULL,
+  `address` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Dumping data for table `music`
---
+CREATE TABLE `users_items` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `item_id` int(11) NOT NULL,
+  `status` enum('Added to cart','Confirmed') NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-INSERT INTO `music` (`id`, `title`, `artist`, `album`, `genre`, `format`, `producer`, `label`, `rating`, `date`, `run`) VALUES
-(1, 'Mama', 'Genesis', 'Genesis', 'Rock', 'Cassette', 'Hugh Padgham', 'Atlantic', 5, 1983, '7:30'),
-(2, 'That\'s All', 'Genesis', 'Genesis', 'Progressive Rock', 'LP', 'Hugh Padgham', 'Atlantic', 5, 1983, '4:23'),
-(3, 'Turn it on Again', 'Genesis', 'Duke', 'Progressive Rock', 'LP', 'David Hentschel', 'Atlantic', 5, 1979, '3:50'),
-(4, 'Tonight, Tonight, Tonight', 'Genesis', 'Invisible Touch', 'Progressive Pop', 'CD', 'Hugh Padgham', 'Atlantic', 5, 1986, '8:50'),
-(5,  'Mama', 'Genesis', 'Genesis', 'Rock', 'Cassette', 'Hugh Padgham', 'Atlantic', 5, 1983, '7:30'),
-(6, 'That\'s All', 'Genesis', 'Genesis', 'Progressive Rock', 'LP', 'Hugh Padgham', 'Atlantic', 5, 1983, '4:23'),
-(7, 'Turn it on Again', 'Genesis', 'Duke', 'Progressive Rock', 'LP', 'David Hentschel', 'Atlantic', 5, 1979, '3:50'),
-(8, 'Tonight, Tonight, Tonight', 'Genesis', 'Invisible Touch', 'Progressive Pop', 'CD', 'Hugh Padgham', 'Atlantic', 5, 1986, '8:50'),
-(9, 'Mama', 'Genesis', 'Genesis', 'Rock', 'Cassette', 'Hugh Padgham', 'Atlantic', 5, 1983, '7:30'),
-(10, 'That\'s All', 'Genesis', 'Genesis', 'Progressive Rock', 'LP', 'Hugh Padgham', 'Atlantic', 5, 1983, '4:23'),
-(11, 'Turn it on Again', 'Genesis', 'Duke', 'Progressive Rock', 'LP', 'David Hentschel', 'Atlantic', 5, 1979, '3:50'),
-(12, 'Tonight, Tonight, Tonight', 'Genesis', 'Invisible Touch', 'Progressive Pop', 'CD', 'Hugh Padgham', 'Atlantic', 5, 1986, '8:50'),
-(13, 'Mama', 'Genesis', 'Genesis', 'Rock', 'Cassette', 'Hugh Padgham', 'Atlantic', 5, 1983, '7:30'),
-(14, 'That\'s All', 'Genesis', 'Genesis', 'Progressive Rock', 'LP', 'Hugh Padgham', 'Atlantic', 5, 1983, '4:23'),
-(15, 'Turn it on Again', 'Genesis', 'Duke', 'Progressive Rock', 'LP', 'David Hentschel', 'Atlantic', 5, 1979, '3:50'),
-(16, 'Tonight, Tonight, Tonight', 'Genesis', 'Invisible Touch', 'Progressive Pop', 'CD', 'Hugh Padgham', 'Atlantic', 5, 1986, '8:50'),
-(17, 'Mama', 'Genesis', 'Genesis', 'Rock', 'Cassette', 'Hugh Padgham', 'Atlantic', 5, 1983, '7:30'),
-(18, 'That\'s All', 'Genesis', 'Genesis', 'Progressive Rock', 'LP', 'Hugh Padgham', 'Atlantic', 5, 1983, '4:23'),
-(19, 'Turn it on Again', 'Genesis', 'Duke', 'Progressive Rock', 'LP', 'David Hentschel', 'Atlantic', 5, 1979, '3:50'),
-(20, 'Tonight, Tonight, Tonight', 'Genesis', 'Invisible Touch', 'Progressive Pop', 'CD', 'Hugh Padgham', 'Atlantic', 5, 1986, '8:50'),
-(21, 'Mama', 'Genesis', 'Genesis', 'Rock', 'Cassette', 'Hugh Padgham', 'Atlantic', 5, 1983, '7:30'),
-(22, 'That\'s All', 'Genesis', 'Genesis', 'Progressive Rock', 'LP', 'Hugh Padgham', 'Atlantic', 5, 1983, '4:23'),
-(23, 'Turn it on Again', 'Genesis', 'Duke', 'Progressive Rock', 'LP', 'David Hentschel', 'Atlantic', 5, 1979, '3:50'),
-(24, 'Tonight, Tonight, Tonight', 'Genesis', 'Invisible Touch', 'Progressive Pop', 'CD', 'Hugh Padgham', 'Atlantic', 5, 1986, '8:50'),
-(25, 'Tonight, Tonight, Tonight', 'Genesis', 'Invisible Touch', 'Progressive Pop', 'CD', 'Hugh Padgham', 'Atlantic', 5, 1986, '8:50');
+
 
 --
 -- Indexes for dumped tables
 --
 
 --
--- Indexes for table `music`
+-- Indexes for table `store_categories`
 --
-ALTER TABLE `music`
+ALTER TABLE `store_categories`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `cat_title` (`cat_title`);
+
+--
+-- Indexes for table `store_items`
+--
+ALTER TABLE `store_items`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `store_orders`
+--
+ALTER TABLE `store_orders`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `store_orders_items`
+--
+ALTER TABLE `store_orders_items`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `store_shoppertrack`
+--
+ALTER TABLE `store_shoppertrack`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -87,10 +186,34 @@ ALTER TABLE `music`
 --
 
 --
--- AUTO_INCREMENT for table `music`
+-- AUTO_INCREMENT for table `store_categories`
 --
-ALTER TABLE `music`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+ALTER TABLE `store_categories`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `store_items`
+--
+ALTER TABLE `store_items`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
+-- AUTO_INCREMENT for table `store_orders`
+--
+ALTER TABLE `store_orders`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `store_orders_items`
+--
+ALTER TABLE `store_orders_items`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `store_shoppertrack`
+--
+ALTER TABLE `store_shoppertrack`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
