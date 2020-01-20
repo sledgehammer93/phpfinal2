@@ -5,7 +5,7 @@
  $display_block = "<h1>Your Shopping Cart</h1>";
  //check for cart items based on user session id
  $get_cart_sql = "SELECT st.id, si.item_title, si.item_price,
- st.sel_item_qty, st.sel_item_size, st.sel_item_color FROM
+ st.sel_item_qty FROM
  store_shoppertrack AS st LEFT JOIN store_items AS si ON
  si.id = st.sel_item_id WHERE session_id =
  '".$_COOKIE['PHPSESSID']."'";
@@ -95,7 +95,7 @@
       <ul>
         <li><a href="home.php">Home</a></li>
              <li><a href="signin.php">Sign-in</a></li>
-             <li><a href="createaccount.php">Create Account</a></li>
+             <li><a href="RegiForm2.php">Create Account</a></li>
              <li><a href="cart.php">Cart</a></li>
              <li><a href="contactus.html">Contact Us</a></li>
   

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jan 16, 2020 at 02:28 AM
+-- Generation Time: Jan 20, 2020 at 06:54 PM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.4.1
 
@@ -21,6 +21,19 @@ SET time_zone = "+00:00";
 --
 -- Database: `test`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `calendar_events`
+--
+
+CREATE TABLE `calendar_events` (
+  `id` int(11) NOT NULL,
+  `event_title` varchar(255) NOT NULL,
+  `event_start` date NOT NULL,
+  `date` date NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -119,36 +132,52 @@ CREATE TABLE `store_orders_items` (
 
 CREATE TABLE `store_shoppertrack` (
   `id` int(11) NOT NULL,
+  `username` varchar(255) DEFAULT NULL,
   `session_id` varchar(32) DEFAULT NULL,
   `sel_item_id` int(11) DEFAULT NULL,
   `sel_item_qty` smallint(6) DEFAULT NULL,
-  `sel_item_size` varchar(25) DEFAULT NULL,
-  `sel_item_color` varchar(25) DEFAULT NULL,
   `date_added` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `store_shoppertrack`
+--
+
+INSERT INTO `store_shoppertrack` (`id`, `username`, `session_id`, `sel_item_id`, `sel_item_qty`, `date_added`) VALUES
+(47, NULL, 'e4a925cff1743ae783a7a342200cef92', 2, 1, '2020-01-20 12:51:19');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `users`
+--
+
 CREATE TABLE `users` (
   `id` int(11) NOT NULL,
-  `name` varchar(255) NOT NULL,
-  `email` varchar(255) NOT NULL,
+  `username` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
-  `contact` varchar(255) NOT NULL,
-  `city` varchar(255) NOT NULL,
-  `address` varchar(255) NOT NULL
+  `session_id` varchar(32) DEFAULT NULL,
+  `sel_item_id` int(11) DEFAULT NULL,
+  `sel_item_qty` smallint(6) DEFAULT NULL,
+  `date_added` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-CREATE TABLE `users_items` (
-  `id` int(11) NOT NULL,
-  `user_id` int(11) NOT NULL,
-  `item_id` int(11) NOT NULL,
-  `status` enum('Added to cart','Confirmed') NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+--
+-- Dumping data for table `users`
+--
 
-
+INSERT INTO `users` (`id`, `username`, `password`, `session_id`, `sel_item_id`, `sel_item_qty`, `date_added`) VALUES
+(7, 'wdowdy', '$2y$10$OsOo8xHmdWUQ2YydGzIG1uIcYsdeJDMUoAiSBwGCIWwBmJ/mnp3ja', NULL, NULL, NULL, '0000-00-00 00:00:00');
 
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `calendar_events`
+--
+ALTER TABLE `calendar_events`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `store_categories`
@@ -182,8 +211,20 @@ ALTER TABLE `store_shoppertrack`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
+
+--
+-- AUTO_INCREMENT for table `calendar_events`
+--
+ALTER TABLE `calendar_events`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `store_categories`
@@ -213,7 +254,13 @@ ALTER TABLE `store_orders_items`
 -- AUTO_INCREMENT for table `store_shoppertrack`
 --
 ALTER TABLE `store_shoppertrack`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
+
+--
+-- AUTO_INCREMENT for table `users`
+--
+ALTER TABLE `users`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
