@@ -16,6 +16,7 @@ $firstDayArray = getdate($start);
 <html>
 <head>
 <title><?php echo "Calendar: ".$firstDayArray['month']." ".$firstDayArray['year']; ?></title>
+ <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
 <style type="text/css">
     * {
       box-sizing: border-box; 
@@ -28,7 +29,6 @@ $firstDayArray = getdate($start);
     }
     .col-1 {
       background: rgb(190, 190, 190);
-      flex: 1;
     }
     .col-2 {
       display: flex;
@@ -45,7 +45,7 @@ $firstDayArray = getdate($start);
     }
     header, footer {
       background: rgb(190, 190, 190);
-      height: 20vh;
+      height: 10vh;
     }
     header, footer, article, nav {
       padding: 1em;
@@ -62,19 +62,19 @@ $firstDayArray = getdate($start);
     }
     p {color:black;}
 </style>
-   <nav class="col-1">Navigation
+    <nav class="col-1"><img src="NorthGeorgiaTech.jpg" alt"ngtc" style="width:250px;height:125px;"></img>
       <ul>
         <li><a href="home.php">Home</a></li>
-             <li><a href="signin.php">Sign-in</a></li>
-             <li><a href="RegiForm2.php">Create Account</a></li>
              <li><a href="cart.php">Cart</a></li>
-             <li><a href="contactus.html">Contact Us</a></li>
+             <li><a href="contactus.html">Contact Us</a>
+              <li><a href="showcalendar_withevent.php">Show calendar</a></li>
+                 <li><a href="login.php">Account</a></li>
   
       </ul>
   
     </nav>
     <div class="col-2">
-        <header><img src="NorthGeorgiaTech.jpg" alt"ngtc" style="width:250px;height:125px;">CIST 2352 Final Project</header>
+        <header></header>
 <body>
   <h1>Select a Month/Year Combination</h1>
   <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">

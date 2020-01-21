@@ -1,14 +1,15 @@
  <?php
  session_start();
+ error_reporting(E_ERROR | E_PARSE);
  //connect to database
  $mysqli = mysqli_connect("localhost", "root", "", "test");
  $display_block = "<h1>Your Shopping Cart</h1>";
  //check for cart items based on user session id
- $get_cart_sql = "SELECT st.id, si.item_title, si.item_price,
+$get_cart_sql = "SELECT st.id, si.item_title, si.item_price,
  st.sel_item_qty FROM
  store_shoppertrack AS st LEFT JOIN store_items AS si ON
- si.id = st.sel_item_id WHERE session_id =
- '".$_COOKIE['PHPSESSID']."'";
+ si.id = st.sel_item_id WHERE username =
+ '".$_SESSION['username']."'";
  $get_cart_res = mysqli_query($mysqli, $get_cart_sql)
  or die(mysqli_error($mysqli));
  if (mysqli_num_rows($get_cart_res) < 1) {
@@ -51,7 +52,8 @@
  //close connection to MySQL
  mysqli_close($mysqli);
  ?>
- <style>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
+	<style>
     * {
       box-sizing: border-box; 
     }
@@ -63,7 +65,6 @@
     }
     .col-1 {
       background: rgb(190, 190, 190);
-      flex: 1;
     }
     .col-2 {
       display: flex;
@@ -80,7 +81,7 @@
     }
     header, footer {
       background: rgb(190, 190, 190);
-      height: 20vh;
+      height: 10vh;
     }
     header, footer, article, nav {
       padding: 1em;
@@ -91,19 +92,19 @@
   <head>	
       <title>CIST 2550 Final</title>
   </head>
-    <nav class="col-1">Navigation
+    <nav class="col-1"><img src="NorthGeorgiaTech.jpg" alt"ngtc" style="width:250px;height:125px;"></img>
       <ul>
         <li><a href="home.php">Home</a></li>
-             <li><a href="signin.php">Sign-in</a></li>
-             <li><a href="RegiForm2.php">Create Account</a></li>
              <li><a href="cart.php">Cart</a></li>
-             <li><a href="contactus.html">Contact Us</a></li>
+             <li><a href="contactus.html">Contact Us</a>
+              <li><a href="showcalendar_withevent.php">Show calendar</a></li>
+                 <li><a href="login.php">Account</a></li>
   
       </ul>
   
     </nav>
     <div class="col-2">
-        <header><img src="NorthGeorgiaTech.jpg" alt"ngtc" style="width:250px;height:125px;">CIST 2352 Final Project</header>
+        <header></header>
         <style type="text/css">
  table {
  border: 1px solid black;

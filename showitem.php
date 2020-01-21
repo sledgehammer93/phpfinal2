@@ -2,7 +2,7 @@
 //connect to database
 $mysqli = mysqli_connect("localhost", "root", "", "test");
 
-$display_block = "<h1>My Store - Item Detail</h1>";
+$display_block = "<h1>Item Detail</h1>";
 
 //create safe values for use
 $safe_item_id = mysqli_real_escape_string($mysqli, $_GET['item_id']);
@@ -55,6 +55,7 @@ if (mysqli_num_rows($get_item_res) < 1) {
  //close connection to MySQL
  mysqli_close($mysqli);
  ?>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
  <!DOCTYPE html>
  <html>
  <head>

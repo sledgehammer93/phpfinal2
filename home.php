@@ -55,7 +55,8 @@ mysqli_free_result($get_cats_res);
 //close connection to MySQL
 mysqli_close($mysqli);
 ?>
-<style>
+ <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
+	<style>
     * {
       box-sizing: border-box; 
     }
@@ -67,7 +68,6 @@ mysqli_close($mysqli);
     }
     .col-1 {
       background: rgb(190, 190, 190);
-      flex: 1;
     }
     .col-2 {
       display: flex;
@@ -84,7 +84,7 @@ mysqli_close($mysqli);
     }
     header, footer {
       background: rgb(190, 190, 190);
-      height: 20vh;
+      height: 10vh;
     }
     header, footer, article, nav {
       padding: 1em;
@@ -95,19 +95,19 @@ mysqli_close($mysqli);
   <head>	
       <title>CIST 2550 Final</title>
   </head>
-    <nav class="col-1">Navigation
+    <nav class="col-1"><img src="NorthGeorgiaTech.jpg" alt"ngtc" style="width:250px;height:125px;"></img>
       <ul>
         <li><a href="home.php">Home</a></li>
-             <li><a href="signin.php">Sign-in</a></li>
-             <li><a href="createaccount.php">Create Account</a></li>
              <li><a href="cart.php">Cart</a></li>
-             <li><a href="contactus.html">Contact Us</a></li>
+             <li><a href="contactus.html">Contact Us</a>
+              <li><a href="showcalendar_withevent.php">Show calendar</a></li>
+                 <li><a href="login.php">Account</a></li>
   
       </ul>
   
     </nav>
     <div class="col-2">
-        <header><img src="NorthGeorgiaTech.jpg" alt"ngtc" style="width:250px;height:125px;">CIST 2352 Final Project</header>
+ <header></header>
         <body>
               <?php echo $display_block; ?>
         </body>

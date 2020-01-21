@@ -1,4 +1,3 @@
-
 <?php
 
 	//config file
@@ -82,10 +81,16 @@
 			//Close Statment
 			mysqli_stmt_close($stmt);
 		}
+		
 		mysqli_close($link);
 	}
 ?>
- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
+
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Login</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
 	<style>
     * {
       box-sizing: border-box; 
@@ -137,7 +142,7 @@
   
     </nav>
     <div class="col-2">
-        <header></header>
+            <header></header>
 <body>
 	<div class="wrapper">
 	<h2>Login</h2>
@@ -146,7 +151,7 @@
 		<div class="form-group <?php echo (!empty($username_err)) ? 'has-error' : ''; ?>">
 			<label>Username</label>
 			<input type="text" name="username" class="form-control" value="<?php echo $username; ?>">
-			<span class="help-block"><?php echo $username_err; ?></span>
+			<span class="help-block"><?php echo $username_err; ?>"</span>
 		</div>
 		
 		<div class="form-group <?php echo (!empty($password_err)) ? 'has-error' : ''; ?>">
@@ -164,3 +169,5 @@
 	</div>
 </body>
 </html>
+	
+	

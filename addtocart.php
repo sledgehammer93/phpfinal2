@@ -1,7 +1,8 @@
  
  <?php
  session_start();
- if (isset($_POST['sel_item_id'])) {
+ if(!isset($_SESSION["username"]) || $_SESSION["username"] !== true){
+     if (isset($_POST['sel_item_id'])) {
  //connect to database
  $mysqli = mysqli_connect("localhost", "root", "", "test");
  //create safe values for use
@@ -31,8 +32,9 @@
  mysqli_free_result($get_iteminfo_res);
  //add info to cart table
  $addtocart_sql = "INSERT INTO store_shoppertrack
- (session_id, sel_item_id, sel_item_qty, date_added)
- VALUES ('".$_COOKIE['PHPSESSID']."',
+ (username, session_id, sel_item_id, sel_item_qty, date_added)
+ VALUES ('".$_SESSION['username']."',
+ '".$_COOKIE['PHPSESSID']."',
  '".$safe_sel_item_id."',
  '".$safe_sel_item_qty."', now())";
  $addtocart_res = mysqli_query($mysqli, $addtocart_sql)
@@ -46,6 +48,7 @@
  } else {
  //send them somewhere else
  header("Location: home.php");
- exit;
- }
+    exit;
+}
+} 
  ?>
